@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-xl-5">
+        <div class="card feature-card text-center">
+            <div class="mb-5">
+                <i class="fas fa-sign-in-alt fa-5x mb-4 text-primary-dark"></i>
+                <h1 class="display-5 fw-bold mb-3 text-primary-dark">Welcome Back</h1>
+                <p class="lead text-muted mb-0">Sign in to access your dashboard</p>
+            </div>
+
+            <form method="POST" class="needs-validation" novalidate>
+                <div class="mb-4">
+                    <label for="email" class="form-label fs-5 fw-semibold text-primary-dark">Email Address</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white border-primary">
+                            <i class="fas fa-envelope text-primary-dark"></i>
+                        </span>
+                        <input type="email" class="form-control border-primary shadow-sm" id="email" name="email" 
+                               placeholder="student@college.edu" required autocomplete="email">
+                        <div class="invalid-feedback">
+                            Please provide a valid email.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="password" class="form-label fs-5 fw-semibold text-primary-dark">Password</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white border-primary">
+                            <i class="fas fa-lock text-primary-dark"></i>
+                        </span>
+                        <input type="password" class="form-control border-primary shadow-sm" id="password" name="password" 
+                               placeholder="••••••••" required autocomplete="current-password">
+                        <div class="invalid-feedback">
+                            Password is required.
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fs-5 fw-bold mb-4 shadow-lg">
+                    <i class="fas fa-arrow-right me-3"></i>
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right ms-3"></i>
+                </button>
+            </form>
+
+            <div class="mt-5 pt-4 border-top">
+                <h5 class="fw-bold text-primary-dark mb-3">New User?</h5>
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('register_student') }}" class="btn btn-success btn-lg py-3 fs-6 fw-semibold">
+                        <i class="fas fa-user-graduate me-3"></i>
+                        Register as <strong>Student</strong>
+                    </a>
+                    <a href="{{ url_for('register_company') }}" class="btn btn-outline-success btn-lg py-3 fs-6 fw-semibold border-3">
+                        <i class="fas fa-building me-3"></i>
+                        Register as <strong>Company</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
