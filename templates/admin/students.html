@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Manage Students{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="display-5 fw-bold text-primary mb-0">
+                    <i class="fas fa-users me-3"></i>Students
+                </h1>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="GET">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" class="form-control" value="{{ search }}" 
+                           placeholder="Search by name, roll number, or email...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="card shadow">
+        <div class="card-body p-0">
+            {% if students %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Roll Number</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td><strong>#{{ student.id }}</strong></td>
+                            <td>{{ student.full_name }}</td>
+                            <td><strong>{{ student.roll_number }}</strong></td>
+                            <td>{{ student.email }}</td>
+                            <td>
+                                {% if student.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Deactivated</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    {% if student.is_active %}
+                                    <form method="POST" action="{{ url_for('deactivate_student', student_id=student.id) }}" style="display:inline;">
+                                        <button class="btn btn-warning text-dark" onclick="return confirm('Deactivate {{ student.full_name }}?')">
+                                            <i class="fas fa-user-slash"></i> Deactivate
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Deactivated</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-user-graduate fa-3x text-muted mb-3"></i>
+                <h4>No students found</h4>
+                <p class="text-muted">{{ search and 'Try different search term' or 'Register first student' }}</p>
+                <a href="{{ url_for('register_student') }}" class="btn btn-primary">Register Student</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -125,33 +125,105 @@ def register_company():
 @app.route('/admin/dashboard')
 @login_required
 def admin_dashboard():
-    if not hasattr(current_user, 'role') or current_user.role != 'admin':
+    if current_user.role != 'admin':
         flash('Admin access only!', 'danger')
         return redirect(url_for('login'))
     
     db = get_db()
     stats = {
         'students': db.execute('SELECT COUNT(*) FROM students').fetchone()[0],
-        'companies': db.execute('SELECT COUNT(*) FROM companies').fetchone()[0]
+        'companies': db.execute('SELECT COUNT(*) FROM companies').fetchone()[0],
+        'drives': db.execute('SELECT COUNT(*) FROM placement_drives').fetchone()[0] or 0,
+        'applications': db.execute('SELECT COUNT(*) FROM applications').fetchone()[0] or 0
     }
     return render_template('admin/dashboard.html', stats=stats)
 
-@app.route('/student/dashboard')
+# Admin: Manage Companies
+@app.route('/admin/companies')
 @login_required
-def student_dashboard():
-    if not hasattr(current_user, 'role') or current_user.role != 'student':
-        flash('Student access only!', 'danger')
+def admin_companies():
+    if current_user.role != 'admin':
+        return redirect(url_for('login'))
+    
+    page = request.args.get('page', 1, type=int)
+    search = request.args.get('search', '')
+    
+    db = get_db()
+    query = "SELECT c.*, u.email FROM companies c JOIN users u ON c.id = u.id WHERE 1=1"
+    params = []
+    
+    if search:
+        query += " AND (c.company_name LIKE ? OR u.email LIKE ?)"
+        params.extend([f'%{search}%', f'%{search}%'])
+    
+    query += " ORDER BY c.id DESC"
+    companies = db.execute(query, params).fetchall()
+    
+    return render_template('admin/companies.html', companies=companies, search=search)
+
+@app.route('/admin/companies/<int:company_id>/approve', methods=['POST'])
+@login_required
+def approve_company(company_id):
+    if current_user.role != 'admin':
         return redirect(url_for('login'))
     
     db = get_db()
-    student = db.execute('SELECT * FROM students s JOIN users u ON s.id = u.id WHERE u.id = ?', 
-                        (current_user.id,)).fetchone()
-    return render_template('student/dashboard.html', student=student)
+    db.execute("UPDATE companies SET approval_status = 'approved' WHERE id = ?", (company_id,))
+    db.commit()
+    flash('Company approved successfully!', 'success')
+    return redirect(url_for('admin_companies'))
+
+@app.route('/admin/companies/<int:company_id>/reject', methods=['POST'])
+@login_required
+def reject_company(company_id):
+    if current_user.role != 'admin':
+        return redirect(url_for('login'))
+    
+    db = get_db()
+    db.execute("UPDATE companies SET approval_status = 'rejected' WHERE id = ?", (company_id,))
+    db.commit()
+    flash('Company rejected!', 'warning')
+    return redirect(url_for('admin_companies'))
+
+@app.route('/admin/companies/<int:company_id>/blacklist', methods=['POST'])
+@login_required
+def blacklist_company(company_id):
+    if current_user.role != 'admin':
+        return redirect(url_for('login'))
+    
+    db = get_db()
+    db.execute("UPDATE users SET is_active = 0 WHERE id = ?", (company_id,))
+    db.commit()
+    flash('Company blacklisted!', 'danger')
+    return redirect(url_for('admin_companies'))
+
+# Admin: Manage Students (similar pattern)
+@app.route('/admin/students')
+@login_required
+def admin_students():
+    if current_user.role != 'admin':
+        return redirect(url_for('login'))
+    
+    search = request.args.get('search', '')
+    
+    db = get_db()
+    query = """
+        SELECT s.*, u.email, u.is_active 
+        FROM students s 
+        JOIN users u ON s.id = u.id 
+        WHERE 1=1
+    """
+    params = []
+    
+    if search:
+        query += " AND (s.full_name LIKE ? OR s.roll_number LIKE ? OR u.email LIKE ?)"
+        params.extend([f'%{search}%', f'%{search}%', f'%{search}%'])
+    
+    query += " ORDER BY s.id DESC"
+    students = db.execute(query, params).fetchall()
+    
+    return render_template('admin/students.html', students=students, search=search)
+
 
 if __name__ == '__main__':
-    with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql') as f:
-            db.executescript(f.read().decode('utf-8'))
-        db.commit()
     app.run(debug=True)
