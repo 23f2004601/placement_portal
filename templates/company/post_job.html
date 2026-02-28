@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Post New Job{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-1"><i class="fas fa-plus-circle me-2"></i>Create Placement Drive</h2>
+                    <p class="mb-0">Share job details with eligible students of the institute.</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Job Title *</label>
+                            <input type="text" name="job_title" class="form-control form-control-lg" 
+                                   placeholder="e.g. Software Engineer - Intern" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Job Description *</label>
+                            <textarea name="description" class="form-control" rows="5" required
+                                      placeholder="Describe the role, responsibilities, and technologies used."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Eligibility Criteria *</label>
+                            <textarea name="eligibility" class="form-control" rows="4" required
+                                      placeholder="e.g. B.Tech CSE/IT, CGPA &gt;= 7.0, no active backlogs, 2025 pass-out, etc."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="deadline" class="form-label fw-bold">Application Deadline *</label>
+                            <input
+                                type="date"
+                                id="deadline"
+                                name="deadline"
+                                class="form-control"
+                                required
+                                title="Application deadline date"
+                                placeholder="Select application deadline"
+                            >
+                            <small class="text-muted">After this date, students should not be able to apply.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('company_main_page') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="fas fa-paper-plane me-2"></i>Submit for Approval
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

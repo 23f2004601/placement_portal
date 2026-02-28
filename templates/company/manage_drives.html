@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Manage Drives{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <h1 class="display-5 fw-bold mb-0">
+                <i class="fas fa-briefcase me-3 text-primary"></i>My Placement Drives
+            </h1>
+            <a href="{{ url_for('job_dalo') }}" class="btn btn-success btn-lg">
+                <i class="fas fa-plus me-2"></i>Create New Drive
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-body p-0">
+            {% if drives %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Drive ID</th>
+                            <th>Job Title</th>
+                            <th>Application Deadline</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drive in drives %}
+                        <tr>
+                            <td>#{{ drive.id }}</td>
+                            <td>
+                                <strong>{{ drive.job_title }}</strong><br>
+                                <small class="text-muted">
+                                    {{ (drive.job_description or '')[:80] }}{% if drive.job_description and drive.job_description|length > 80 %}...{% endif %}
+                                </small>
+                            </td>
+                            <td>{{ drive.application_deadline or '—' }}</td>
+                            <td>
+                                {% if drive.status == 'approved' %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">Approved</span>
+                                {% elif drive.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">Pending</span>
+                                {% elif drive.status == 'rejected' %}
+                                    <span class="badge bg-danger fs-6 px-3 py-2">Rejected</span>
+                                {% elif drive.status == 'closed' %}
+                                    <span class="badge bg-secondary fs-6 px-3 py-2">Closed</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6 px-3 py-2">{{ drive.status|title }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ drive.created_at }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ url_for('company_applis', drive_id=drive.id) }}" 
+                                       class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-users me-1"></i>View Applicants
+                                    </a>
+                                    {% if drive.status == 'approved' %}
+                                    <form method="POST" action="{{ url_for('drive_status', drive_id=drive.id) }}" class="d-inline">
+                                        <input type="hidden" name="status" value="closed">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-lock me-1"></i>Close Drive
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-briefcase fa-4x text-muted mb-4"></i>
+                <h4 class="text-muted">No placement drives created yet</h4>
+                <p class="text-muted lead mb-4">Post your first job to start receiving applications from students.</p>
+                <a href="{{ url_for('job_dalo') }}" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus me-2"></i>Create Placement Drive
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

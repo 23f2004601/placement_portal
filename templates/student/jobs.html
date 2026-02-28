@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Find Jobs{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold mb-4">
+                <i class="fas fa-briefcase me-3 text-primary"></i>Job Openings
+            </h1>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <form method="GET">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-primary">
+                        <i class="fas fa-search text-primary"></i>
+                    </span>
+                    <input type="text" name="search" class="form-control border-primary fs-5 py-3" 
+                           value="{{ search }}" placeholder="Search by job title, company, or skills...">
+                    <button type="submit" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Jobs Grid -->
+    <div class="row g-4">
+        {% for job in jobs %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-lg h-100 hover-lift">
+                <div class="card-header bg-gradient-primary text-white py-4">
+                    <h4 class="mb-1 fw-bold">{{ job.job_title }}</h4>
+                    <h6 class="mb-0 opacity-90">{{ job.company_name }}</h6>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted mb-3">{{ job.eligibility[:150] }}...</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-calendar-alt text-primary me-2"></i>Deadline: {{ job.deadline }}</li>
+                        {% if job.description %}
+                        <li><i class="fas fa-align-left text-primary me-2"></i>{{ job.description[:60] }}...</li>
+                        {% endif %}
+                    </ul>
+                    <a href="{{ url_for('stud_apply', drive_id=job.id) }}" class="btn btn-primary w-100 py-3">
+                        <i class="fas fa-paper-plane me-2"></i>Apply Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-briefcase fa-4x text-muted mb-4"></i>
+            <h3 class="text-muted mb-3">No jobs found</h3>
+            <p class="text-muted">{{ search and 'Try different keywords' or 'No approved jobs available' }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

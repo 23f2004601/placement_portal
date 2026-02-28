@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Manage Drives{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="display-5 fw-bold">
+                    <i class="fas fa-briefcase me-3 text-primary"></i>All Placement Drives
+                </h1>
+                <p class="mb-0 text-muted">{{ drives|length }} drives found</p>
+            </div>
+            <a href="{{ url_for('admin_home') }}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-arrow-left me-2"></i>Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="GET">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" class="form-control form-control-lg" value="{{ search }}" 
+                           placeholder="Search by job title or company name...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-body p-0">
+            {% if drives %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drive in drives %}
+                        <tr>
+                            <td>#{{ drive.id }}</td>
+                            <td>
+                                <strong>{{ drive.job_title }}</strong><br>
+                                <small class="text-muted">
+                                    {{ (drive.description or '')[:80] }}{% if drive.description and drive.description|length > 80 %}...{% endif %}
+                                </small>
+                            </td>
+                            <td>{{ drive.company_name }}</td>
+                            <td>{{ drive.application_deadline or '—' }}</td>
+                            <td>
+                                {% if drive.status == 'approved' %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">Approved</span>
+                                {% elif drive.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">Pending</span>
+                                {% elif drive.status == 'rejected' %}
+                                    <span class="badge bg-danger fs-6 px-3 py-2">Rejected</span>
+                                {% elif drive.status == 'closed' %}
+                                    <span class="badge bg-secondary fs-6 px-3 py-2">Closed</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6 px-3 py-2">{{ drive.status|title }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ drive.created_at }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    {% if drive.status == 'pending' %}
+                                    <form method="POST" action="{{ url_for('drive_swikaar_karo', drive_id=drive.id) }}">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check me-1"></i>Approve
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('drive_aswikaar_karo', drive_id=drive.id) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times me-1"></i>Reject
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                        <span class="text-muted small">No actions</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-briefcase fa-4x text-muted mb-4"></i>
+                <h4 class="text-muted">No drives found</h4>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

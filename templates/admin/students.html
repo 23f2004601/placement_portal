@@ -8,7 +8,7 @@
                 <h1 class="display-5 fw-bold text-primary mb-0">
                     <i class="fas fa-users me-3"></i>Students
                 </h1>
-                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary btn-lg">
+                <a href="{{ url_for('admin_home') }}" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-arrow-left me-2"></i>Dashboard
                 </a>
             </div>
@@ -56,20 +56,28 @@
                                 {% if student.is_active %}
                                     <span class="badge bg-success">Active</span>
                                 {% else %}
-                                    <span class="badge bg-danger">Deactivated</span>
+                                    <span class="badge bg-danger">Blacklisted</span>
                                 {% endif %}
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('edit_student', student_id=student.id) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </a>
                                     {% if student.is_active %}
-                                    <form method="POST" action="{{ url_for('deactivate_student', student_id=student.id) }}" style="display:inline;">
-                                        <button class="btn btn-warning text-dark" onclick="return confirm('Deactivate {{ student.full_name }}?')">
-                                            <i class="fas fa-user-slash"></i> Deactivate
+                                    <form method="POST" action="{{ url_for('vidhyarthi_nikalo', student_id=student.id) }}" 
+                                          class="d-inline" onsubmit="return confirm('Blacklist {{ student.full_name }}? This will disable login access.')">
+                                        <button type="submit" class="btn btn-warning btn-sm text-dark">
+                                            <i class="fas fa-user-slash me-1"></i> Blacklist
                                         </button>
                                     </form>
-                                    {% else %}
-                                    <span class="badge bg-secondary">Deactivated</span>
                                     {% endif %}
+                                    <form method="POST" action="{{ url_for('delete_student', student_id=student.id) }}"
+                                          class="d-inline" onsubmit="return confirm('Delete {{ student.full_name }} permanently? This cannot be undone.')">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash-alt me-1"></i> Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -82,7 +90,7 @@
                 <i class="fas fa-user-graduate fa-3x text-muted mb-3"></i>
                 <h4>No students found</h4>
                 <p class="text-muted">{{ search and 'Try different search term' or 'Register first student' }}</p>
-                <a href="{{ url_for('register_student') }}" class="btn btn-primary">Register Student</a>
+                <a href="{{ url_for('reg_stud') }}" class="btn btn-primary">Register Student</a>
             </div>
             {% endif %}
         </div>

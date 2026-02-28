@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Student{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="fas fa-user-edit me-2"></i>Edit Student
+        </h1>
+        <a href="{{ url_for('vidyarthi_list') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Students
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="full_name" class="form-label">Full Name</label>
+                    <input id="full_name" type="text" name="full_name" class="form-control" value="{{ student.full_name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="roll_number" class="form-label">Roll Number</label>
+                    <input id="roll_number" type="text" name="roll_number" class="form-control" value="{{ student.roll_number }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input id="email" type="email" name="email" class="form-control" value="{{ student.email }}" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

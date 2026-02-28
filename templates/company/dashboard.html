@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Company Dashboard{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="display-5 fw-bold mb-1 text-primary-dark">
+                    <i class="fas fa-building me-3"></i>{{ company.company_name }}
+                </h1>
+                <p class="lead text-muted mb-0">Manage your placement drives and applications from a single place.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('drive_list') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-list me-2"></i>My Drives
+                </a>
+                <a href="{{ url_for('job_dalo') }}" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus me-2"></i>Post New Job
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Grid (styled like admin stats-card) -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4">
+                <i class="fas fa-briefcase fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">{{ stats.drives or 0 }}</h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Job Drives</p>
+                <small class="text-white-75">Total drives created</small>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4 company-stats-applications">
+                <i class="fas fa-user-check fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">{{ stats.applications or 0 }}</h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Total Applications</p>
+                <small class="text-white-75">Across all drives</small>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4 company-stats-approval">
+                <i class="fas fa-check-circle fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-6 fw-bold mb-1">
+                    {{ company.approval_status|title if company.approval_status else 'Pending' }}
+                </h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Approval Status</p>
+                <small class="text-white-75">Set by admin</small>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4 company-stats-average-apps">
+                <i class="fas fa-chart-line fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">
+                    {{ stats.applications and (stats.applications // (stats.drives or 1)) or 0 }}
+                </h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Avg. Apps / Drive</p>
+                <small class="text-white-75">Helps gauge interest</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature / Quick Actions (similar to admin feature-card) -->
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <a href="{{ url_for('job_dalo') }}" class="feature-card h-100 d-block text-decoration-none text-dark">
+                <i class="fas fa-plus-circle fa-3x mb-3 text-primary-dark"></i>
+                <h4 class="fw-bold text-primary-dark mb-3">Create New Drive</h4>
+                <ul class="list-unstyled mb-3">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Define role & eligibility</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Set application deadline</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Notify students instantly</li>
+                </ul>
+                <span class="btn btn-primary w-100 mt-2">
+                    <i class="fas fa-arrow-right me-2"></i>Post Job
+                </span>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <a href="{{ url_for('drive_list') }}" class="feature-card h-100 d-block text-decoration-none text-dark">
+                <i class="fas fa-tasks fa-3x mb-3 text-primary-dark"></i>
+                <h4 class="fw-bold text-primary-dark mb-3">Manage Drives</h4>
+                <ul class="list-unstyled mb-3">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>View all posted drives</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Track approval status</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Open/Close drives</li>
+                </ul>
+                <span class="btn btn-success w-100 mt-2">
+                    <i class="fas fa-arrow-right me-2"></i>View Drives
+                </span>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+            <a href="{{ url_for('drive_list') }}" class="feature-card h-100 d-block text-decoration-none text-dark">
+                <i class="fas fa-users fa-3x mb-3 text-primary-dark"></i>
+                <h4 class="fw-bold text-primary-dark mb-3">Review Applications</h4>
+                <ul class="list-unstyled mb-3">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>See applicants per drive</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Download resumes</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Update application status</li>
+                </ul>
+                <span class="btn btn-primary w-100 mt-2">
+                    <i class="fas fa-arrow-right me-2"></i>Go to Applications
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

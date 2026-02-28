@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ drive.job_title }} - Apply{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-1">Apply for {{ drive.job_title }}</h2>
+                    <h6 class="opacity-90">{{ drive.company_name or 'Company' }}</h6>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold fs-5">Cover Letter</label>
+                            <textarea name="cover_letter" class="form-control form-control-lg" 
+                                      rows="6" placeholder="Why are you perfect for this role? Share your motivation and relevant experience..." required></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <a href="{{ url_for('jobs_list') }}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Jobs
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button type="submit" class="btn btn-success btn-lg w-100 py-3">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -49,58 +49,10 @@
     </div>
 </div>
 
-<!-- Feature Highlights -->
-<div class="row g-4">
-    <div class="col-lg-4 col-md-6">
-        <div class="feature-card">
-            <i class="fas fa-users fa-3x mb-3 text-primary-dark"></i>
-            <h4 class="fw-bold text-primary-dark mb-3">Student Management</h4>
-            <ul class="list-unstyled">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>View all students</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Search by name/ID</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Blacklist/Deactivate</li>
-            </ul>
-            <a href="#" class="btn btn-primary mt-3 w-100">
-                <i class="fas fa-arrow-right me-2"></i>Manage Students
-            </a>
-        </div>
-    </div>
-    
-    <div class="col-lg-4 col-md-6">
-        <div class="feature-card">
-            <i class="fas fa-building fa-3x mb-3 text-primary-dark"></i>
-            <h4 class="fw-bold text-primary-dark mb-3">Company Approval</h4>
-            <ul class="list-unstyled">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Approve/Reject companies</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>View company profiles</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Blacklist companies</li>
-            </ul>
-            <a href="#" class="btn btn-success mt-3 w-100">
-                <i class="fas fa-arrow-right me-2"></i>Approve Companies
-            </a>
-        </div>
-    </div>
-    
-    <div class="col-lg-4 col-md-12">
-        <div class="feature-card">
-            <i class="fas fa-chart-line fa-3x mb-3 text-primary-dark"></i>
-            <h4 class="fw-bold text-primary-dark mb-3">Analytics Dashboard</h4>
-            <ul class="list-unstyled">
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Real-time statistics</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Placement trends</li>
-                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Export reports</li>
-            </ul>
-            <a href="#" class="btn btn-primary mt-3 w-100">
-                <i class="fas fa-arrow-right me-2"></i>View Analytics
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- Quick Actions - Updated -->
+<!-- Quick Actions -->
 <div class="row g-4 mt-5">
     <div class="col-lg-3 col-md-6">
-        <a href="{{ url_for('admin_companies') }}" class="feature-card h-100">
+        <a href="{{ url_for('view_company') }}" class="feature-card h-100">
             <i class="fas fa-building fa-3x mb-3 text-primary-dark"></i>
             <h4 class="fw-bold text-primary-dark mb-2">Manage Companies</h4>
             <div class="mb-3">
@@ -110,7 +62,7 @@
         </a>
     </div>
     <div class="col-lg-3 col-md-6">
-        <a href="{{ url_for('admin_students') }}" class="feature-card h-100">
+        <a href="{{ url_for('vidyarthi_list') }}" class="feature-card h-100">
             <i class="fas fa-users fa-3x mb-3 text-primary-dark"></i>
             <h4 class="fw-bold text-primary-dark mb-2">Manage Students</h4>
             <div class="mb-3">
@@ -119,7 +71,26 @@
             <p class="text-muted mb-0">View/Deactivate/Search</p>
         </a>
     </div>
-    <!-- Add more cards for Drives/Applications -->
+    <div class="col-lg-3 col-md-6">
+        <a href="{{ url_for('drive_suchi') }}" class="feature-card h-100">
+            <i class="fas fa-briefcase fa-3x mb-3 text-primary-dark"></i>
+            <h4 class="fw-bold text-primary-dark mb-2">Manage Drives</h4>
+            <div class="mb-3">
+                <span class="badge highlight-badge fs-6">{{ stats.drives or 0 }}</span>
+            </div>
+            <p class="text-muted mb-0">Approve and monitor drives</p>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <a href="{{ url_for('admin_applis') }}" class="feature-card h-100">
+            <i class="fas fa-file-alt fa-3x mb-3 text-primary-dark"></i>
+            <h4 class="fw-bold text-primary-dark mb-2">All Applications</h4>
+            <div class="mb-3">
+                <span class="badge highlight-badge fs-6">{{ stats.applications or 0 }}</span>
+            </div>
+            <p class="text-muted mb-0">View all applications</p>
+        </a>
+    </div>
 </div>
 
 {% endblock %}

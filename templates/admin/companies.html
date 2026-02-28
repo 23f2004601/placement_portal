@@ -10,7 +10,7 @@
         </h1>
         <p class="lead text-muted mb-0">{{ companies|length }} Companies</p>
     </div>
-    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-lg">
+    <a href="{{ url_for('admin_home') }}" class="btn btn-outline-secondary btn-lg">
         <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
     </a>
 </div>
@@ -25,7 +25,7 @@
                         <i class="fas fa-search text-primary-dark"></i>
                     </span>
                     <input type="text" class="form-control border-primary shadow-sm fs-5" 
-                           name="search" value="{{ search }}" placeholder="Search by company name or email...">
+                           name="search" value="{{ search }}" placeholder="Search by ID, company name, or email...">
                 </div>
             </div>
             <div class="col-md-4">
@@ -78,21 +78,29 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
+                                    <a href="{{ url_for('edit_company', company_id=company.id) }}" class="btn btn-outline-primary btn-sm me-1">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
                                     {% if company.approval_status == 'pending' %}
-                                        <form method="POST" action="{{ url_for('approve_company', company_id=company.id) }}" class="d-inline">
+                                        <form method="POST" action="{{ url_for('company_swikaar_karo', company_id=company.id) }}" class="d-inline">
                                             <button type="submit" class="btn btn-success btn-sm me-1" onclick="return confirm('Approve {{ company.company_name }}?')">
                                                 <i class="fas fa-check me-1"></i>Approve
                                             </button>
                                         </form>
                                     {% endif %}
-                                    <form method="POST" action="{{ url_for('reject_company', company_id=company.id) }}" class="d-inline">
+                                    <form method="POST" action="{{ url_for('company_aswikaar_karo', company_id=company.id) }}" class="d-inline">
                                         <button type="submit" class="btn btn-danger btn-sm me-1" onclick="return confirm('Reject {{ company.company_name }}?')">
                                             <i class="fas fa-times me-1"></i>Reject
                                         </button>
                                     </form>
-                                    <form method="POST" action="{{ url_for('blacklist_company', company_id=company.id) }}" class="d-inline">
-                                        <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('Blacklist {{ company.company_name }}?')">
+                                    <form method="POST" action="{{ url_for('company_blacklist', company_id=company.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-outline-dark btn-sm me-1" onclick="return confirm('Blacklist {{ company.company_name }}? This will disable login access.')">
                                             <i class="fas fa-ban me-1"></i>Blacklist
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('delete_company', company_id=company.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete {{ company.company_name }} permanently? This cannot be undone.')">
+                                            <i class="fas fa-trash-alt me-1"></i>Delete
                                         </button>
                                     </form>
                                 </div>

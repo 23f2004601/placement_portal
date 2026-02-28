@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}All Applications{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="display-5 fw-bold">
+                    <i class="fas fa-file-alt me-3 text-primary"></i>All Applications
+                </h1>
+                <a href="{{ url_for('admin_home') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="GET">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" class="form-control form-control-lg" value="{{ search }}" 
+                           placeholder="Search student ">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="card shadow-lg">
+        <div class="card-body p-0">
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Student</th>
+                            <th>Job</th>
+                            <th>Company</th>
+                            <th>Date Applied</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td>
+                                <strong>{{ app.full_name }}</strong><br>
+                                <small>{{ app.roll_number }}</small>
+                            </td>
+                            <td>{{ app.job_title }}</td>
+                            <td>{{ app.company_name }}</td>
+                            <td>{{ app.application_date[:10] }}</td>
+                            <td>
+                                {% if app.status == 'applied' %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">Applied</span>
+                                {% elif app.status == 'shortlisted' %}
+                                    <span class="badge bg-info fs-6 px-3 py-2">Shortlisted</span>
+                                {% elif app.status == 'interview' %}
+                                    <span class="badge bg-primary fs-6 px-3 py-2">Interview</span>
+                                {% elif app.status == 'selected' %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">Selected</span>
+                                {% elif app.status == 'placed' %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">Placed</span>
+                                {% else %}
+                                    <span class="badge bg-danger fs-6 px-3 py-2">{{ app.status|title }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-file-alt fa-4x text-muted mb-4"></i>
+                <h4 class="text-muted">No applications yet</h4>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

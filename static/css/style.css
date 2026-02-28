@@ -1,0 +1,194 @@
+/* Student Registration Styles */
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 50%, #ffd3a5 100%);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9a9e, #fecfef, #fecfef);
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.student-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.register-title {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.register-subtitle {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-icon {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e8f4f8;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fafbfc;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #74b9ff;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(116, 185, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.file-input {
+    padding: 12px;
+    background: white !important;
+}
+
+.register-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+}
+
+.register-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #ecf0f1;
+}
+
+.login_user-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login_user-link:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background: #74b9ff;
+    color: white;
+    border-left: 4px solid #0984e3;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .register-card {
+        margin: 20px;
+        padding: 30px 25px;
+    }
+}
+
+/* Company applications table custom cells */
+.applications-skills-cell {
+    max-width: 260px;
+}
+
+/* Company dashboard custom stats backgrounds */
+.company-stats-applications {
+    background: linear-gradient(135deg, #ffd5c2, #f4a88a);
+}
+
+.company-stats-approval {
+    background: linear-gradient(135deg, #c2d6ff, #8aa8e6);
+}
+
+.company-stats-average-apps {
+    background: linear-gradient(135deg, #d4f4dd, #28a745);
+}
+
+/* Utility classes */
+.inline-form {
+    display: inline;
+}

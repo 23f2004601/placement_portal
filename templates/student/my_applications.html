@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}My Applications{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="display-5 fw-bold">
+                    <i class="fas fa-file-alt me-3 text-primary"></i>My Applications
+                </h1>
+                <a href="{{ url_for('jobs_list') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Find More Jobs
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-body p-0">
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Date Applied</th>
+                            <th>Status</th>
+                            <th>Drive Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td>
+                                <strong>{{ app.job_title }}</strong>
+                            </td>
+                            <td>{{ app.company_name }}</td>
+                            <td>{{ app.application_date[:10] }}</td>
+                            <td>
+                                {% if app.status == 'applied' %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">Applied</span>
+                                {% elif app.status == 'shortlisted' %}
+                                    <span class="badge bg-info fs-6 px-3 py-2">Shortlisted</span>
+                                {% elif app.status == 'selected' %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">Selected</span>
+                                {% else %}
+                                    <span class="badge bg-danger fs-6 px-3 py-2">{{ app.status|title }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if app.drive_status == 'approved' %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">Active</span>
+                                {% elif app.drive_status == 'pending' %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">Pending Approval</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6 px-3 py-2">{{ app.drive_status|title }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-file-alt fa-4x text-muted mb-4"></i>
+                <h4 class="text-muted">No applications yet</h4>
+                <p class="text-muted lead">Start applying to jobs to track your applications here!</p>
+                <a href="{{ url_for('jobs_list') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-search me-2"></i>Find Jobs
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -28,6 +28,7 @@
         .navbar {
             background: linear-gradient(45deg, var(--primary-pastel), var(--primary-dark)) !important;
             box-shadow: 0 4px 20px rgba(107,155,122,0.3);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
         
@@ -62,6 +63,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             background: rgba(255,255,255,0.95);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
         
@@ -110,7 +112,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark py-3">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="{{ url_for('index') }}">
+            <a class="navbar-brand fw-bold fs-3" href="{{ url_for('home') }}">
                 <i class="fas fa-briefcase me-2"></i>Placement Portal
             </a>
             
@@ -126,14 +128,14 @@
                                 <span class="highlight-badge">{{ current_user.role|title }}</span>
                             </span></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">
-                                <i class="fas fa-sign-out-alt me-2 text-danger"></i>Logout
+                            <li><a class="dropdown-item" href="{{ url_for('logout_user') }}">
+                                <i class="fas fa-sign-out-alt me-2 text-danger"></i>logout_user
                             </a></li>
                         </ul>
                     </div>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-sm px-4 rounded-pill">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    <a href="{{ url_for('login_user') }}" class="btn btn-outline-light btn-sm px-4 rounded-pill">
+                        <i class="fas fa-sign-in-alt me-2"></i>login_user
                     </a>
                 {% endif %}
             </div>
@@ -153,7 +155,7 @@
                                 <strong>{{ message }}</strong>
                             </div>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close alert"></button>
                     </div>
                 {% endfor %}
             {% endif %}

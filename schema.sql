@@ -1,4 +1,4 @@
--- USERS: common login table for admin, student, company
+-- USERS: common login_user table for admin, student, company
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT UNIQUE NOT NULL,
@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS students (
     cgpa REAL,
     phone TEXT,
     resume_path TEXT,
+    skills TEXT,
     FOREIGN KEY (id) REFERENCES users (id)
 );
 
@@ -68,32 +69,3 @@ CREATE TABLE IF NOT EXISTS placements (
     remarks TEXT,
     FOREIGN KEY (application_id) REFERENCES applications (id)
 );
-
--- Companies table (add approval_status if missing)
-ALTER TABLE companies ADD COLUMN approval_status TEXT DEFAULT 'pending';
-
--- Placement Drives
-CREATE TABLE IF NOT EXISTS placement_drives (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company_id INTEGER NOT NULL,
-    job_title TEXT NOT NULL,
-    description TEXT,
-    eligibility TEXT,
-    deadline DATE,
-    status TEXT DEFAULT 'pending',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (company_id) REFERENCES companies(id)
-);
-
--- Applications
-CREATE TABLE IF NOT EXISTS applications (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_id INTEGER NOT NULL,
-    drive_id INTEGER NOT NULL,
-    applied_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status TEXT DEFAULT 'applied',
-    FOREIGN KEY (student_id) REFERENCES students(id),
-    FOREIGN KEY (drive_id) REFERENCES placement_drives(id),
-    UNIQUE(student_id, drive_id)
-);
-

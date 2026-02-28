@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="display-5 fw-bold mb-1">
+                    <i class="fas fa-user-graduate me-3 text-primary"></i>Student Dashboard
+                </h1>
+                <p class="mb-0 text-muted">Browse approved placement drives and track your applications.</p>
+            </div>
+            <a href="{{ url_for('stud_prof') }}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-id-badge me-2"></i>Update Profile
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4">
+                <i class="fas fa-briefcase fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">{{ jobs|length }}</h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Approved Drives</p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4" style="background: linear-gradient(135deg, #ffd5c2, #f4a88a);">
+                <i class="fas fa-file-alt fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">{{ applications|length }}</h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Total Applications</p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4" style="background: linear-gradient(135deg, #c2d6ff, #8aa8e6);">
+                <i class="fas fa-check-circle fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">
+                    {{ applications|selectattr('status', 'equalto', 'selected')|list|length }}
+                </h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Selected Offers</p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="stats-card h-100 text-center p-4" style="background: linear-gradient(135deg, #d4f4dd, #28a745);">
+                <i class="fas fa-history fa-3x mb-3 opacity-75"></i>
+                <h2 class="display-5 fw-bold mb-1">{{ applications and applications[0].application_date[:4] or '' }}</h2>
+                <p class="h5 fw-semibold text-white-50 mb-0">Active Batch</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Approved Drives -->
+        <div class="col-lg-7">
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-briefcase me-2 text-primary"></i>Approved Placement Drives
+                    </h5>
+                    <a href="{{ url_for('jobs_list') }}" class="btn btn-outline-primary btn-sm">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if jobs %}
+                        {% for job in jobs[:5] %}
+                        <div class="mb-4 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="fw-bold mb-1">{{ job.job_title }}</h5>
+                                    <p class="mb-1 text-muted">{{ job.company_name }}</p>
+                                    <p class="mb-1 small text-muted">
+                                        {{ job.eligibility[:120] }}{% if job.eligibility and job.eligibility|length > 120 %}...{% endif %}
+                                    </p>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-2">
+                                        <i class="fas fa-calendar-alt text-primary me-1"></i>
+                                        <strong>Deadline:</strong> {{ job.deadline }}
+                                    </p>
+                                    <a href="{{ url_for('stud_apply', drive_id=job.id) }}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-paper-plane me-1"></i>Apply
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted mb-0">No approved drives available right now.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="col-lg-5">
+            <div class="card shadow-lg">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-file-alt me-2 text-primary"></i>Recent Applications
+                    </h5>
+                    <a href="{{ url_for('stud_applications') }}" class="btn btn-outline-primary btn-sm">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    {% if applications %}
+                    <div class="list-group list-group-flush">
+                        {% for app in applications[:5] %}
+                        <div class="list-group-item py-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <strong>{{ app.job_title }}</strong><br>
+                                    <small class="text-muted">{{ app.company_name }}</small>
+                                </div>
+                                <div class="text-end">
+                                    <small class="d-block text-muted">
+                                        {{ app.application_date[:10] }}
+                                    </small>
+                                    {% if app.status == 'applied' %}
+                                        <span class="badge bg-warning text-dark">Applied</span>
+                                    {% elif app.status == 'shortlisted' %}
+                                        <span class="badge bg-info">Shortlisted</span>
+                                    {% elif app.status == 'selected' %}
+                                        <span class="badge bg-success">Selected</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ app.status|title }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="p-4 text-center">
+                        <p class="text-muted mb-0">You have not applied to any drives yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

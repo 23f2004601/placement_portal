@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Student{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <div class="student-icon">🎓</div>
+            <h1 class="register-title">Student Registration</h1>
+            <p class="register-subtitle">Join our placement portal and kickstart your career</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('reg_stud') }}" enctype="multipart/form-data">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="full_name" class="form-label">
+                        <i class="form-icon">👤</i> Full Name
+                    </label>
+                    <input type="text" id="full_name" name="full_name" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="form-icon">📧</i> Email
+                    </label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">
+                        <i class="form-icon">📱</i> Phone
+                    </label>
+                    <input type="tel" id="phone" name="phone" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="roll_number" class="form-label">
+                        <i class="form-icon">🎫</i> Roll Number
+                    </label>
+                    <input type="text" id="roll_number" name="roll_number" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="branch" class="form-label">
+                        <i class="form-icon">🏛️</i> Branch
+                    </label>
+                    <select id="branch" name="branch" class="form-input" required>
+                        <option value="">Select Branch</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Electrical">Electrical</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="year" class="form-label">
+                        <i class="form-icon">📚</i> Year
+                    </label>
+                    <select id="year" name="year" class="form-input" required>
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="skills" class="form-label">
+                        <i class="form-icon">⭐</i> Skills (comma separated)
+                    </label>
+                    <input type="text" id="skills" name="skills" class="form-input" placeholder="Python, Java, SQL, React...">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="form-icon">🔒</i> Password
+                    </label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">
+                        <i class="form-icon">🔐</i> Confirm Password
+                    </label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-input" required>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="resume" class="form-label">
+                    <i class="form-icon">📄</i> Upload Resume (PDF)
+                </label>
+                <input type="file" id="resume" name="resume" accept=".pdf" class="file-input">
+            </div>
+
+            <button type="submit" class="register-btn">
+                🚀 Register Now
+            </button>
+        </form>
+
+        <div class="register-footer">
+            <p>Already have an account? <a href="{{ url_for('login_user') }}" class="login_user-link">login_user here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

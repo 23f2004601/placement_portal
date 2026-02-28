@@ -1,7 +1,7 @@
 import sqlite3
 from flask import g, current_app
 
-def get_db():
+def get_database():
     """Get database connection for current request"""
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -10,7 +10,7 @@ def get_db():
         g.db.row_factory = sqlite3.Row
     return g.db
 
-def close_db(e=None):
+def close_database(e=None):
     """Close database connection"""
     db = g.pop('db', None)
     if db is not None:
@@ -18,7 +18,7 @@ def close_db(e=None):
 
 def init_db():
     """Initialize database with schema.sql"""
-    db = get_db()
+    db = get_database()
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf-8'))
     db.commit()
